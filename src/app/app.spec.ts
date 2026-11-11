@@ -29,7 +29,7 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Los primeros 150 Pokémon',
+      'Los Pokémonster',
     );
   });
 });
