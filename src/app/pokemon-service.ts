@@ -1,31 +1,33 @@
-import { Service } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Pokemon, RespuestaPokemon } from './pokemon';
+import { map } from 'rxjs';
+import { Pokemon, PokemonApiResponse } from './models/pokemon.models';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonService {
-    private http = 'https://pokeapi.co/api/v2/pokemon';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+  private readonly baseImageUrl =
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 
-    private apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+  getPokemons(limit = 150): Observable<Pokemon[]> {
+    return this.http
+      .get<PokemonApiResponse>(`${this.apiUrl}?limit=${limit}`)
+      .pipe(
+        map(({ results }) =>
+          results.map(({ name, url }) => {
+            const id = Number(url.split('/').filter(Boolean).pop());
 
-    private baseImgUrl = 
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
-    getPokemons(limit=151): Observable<Pokemon[]> {
-        
-        return this.http.get<RespuestaPokemon>(`${this.apiUrl}?limit=${limit}`).pipe(
-            map((resp) => {
-                return resp.results.map(item => {
-                    const id = Number(item.url.split('/').filter(Boolean).pop());
-                    return {
-                        id,
-                        name: item.name,
-                        imagen: `${this.baseImgUrl}${id}.png`
-                    };
-                });
-            })
-        );
-    }
+            return {
+              id,
+              name,
+              image: `${this.baseImageUrl}${id}.png`,
+            };
+          }),
+        ),
+      );
+  }
+}

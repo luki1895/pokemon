@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { PokemonLista } from './pokemon-lista/pokemon-lista';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [PokemonLista],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('api');
-}
+export class App {}

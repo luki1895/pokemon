@@ -1,1 +1,29 @@
-<p>pokemon-lista works!</p>
+<section class="pokemon-list">
+  <h1>Los primeros 150 Pokémon</h1>
+
+  @if (cargando()) {
+    <p class="pokemon-message" role="status">Cargando Pokémon...</p>
+  } @else if (error()) {
+    <p class="pokemon-message pokemon-error" role="alert">
+      No se pudo cargar la lista de Pokémon. Inténtalo de nuevo más tarde.
+    </p>
+  } @else {
+    <div class="pokemon-grid">
+      @for (pokemon of pokemons(); track pokemon.id) {
+        <article class="pokemon-card">
+          <img
+            [src]="pokemon.image"
+            [alt]="pokemon.name | titlecase"
+            loading="lazy"
+          />
+          <div class="pokemon-card-content">
+            <span class="pokemon-number">N.º {{ pokemon.id }}</span>
+            <h2>{{ pokemon.name | titlecase }}</h2>
+          </div>
+        </article>
+      } @empty {
+        <p class="pokemon-message">No se encontraron Pokémon.</p>
+      }
+    </div>
+  }
+</section>

@@ -1,15 +1,18 @@
-export interface Itemapi {
-  id: number;
-  Url: string;
-}
-export interface PokemonResponse {
-  count: number;
-  next: string | null;
-  previous: string;
-  results: Itemapi[];
-}
-export interface PokemonDetail {
+export interface PokemonApiItem {
   id: number;
   name: string;
-  img: string;
+  url: string;
+}
+
+export interface PokemonApiResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: PokemonApiItem[];
+}
+
+export interface Pokemon {
+  id: number;
+  name: string;
+  image: string;
 }
